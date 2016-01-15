@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Content-TYpe: text/html; charset=UTF-8");
 
 $name = $_POST['name'];
@@ -23,8 +24,8 @@ $password = $_POST['pw'];
 if(( $name== "asdfg" && $password=="123")||
    ( $name=="qwert" && $password=="123")
 ){
-	setCookie('isLogin','1');
-	setCookie('name', $name);
+	$_SESSION['islogin']=1;
+	$_SESSION['name']=$name;
 ?>
 
 <h1>로그인 완료</h1>
@@ -33,8 +34,8 @@ if(( $name== "asdfg" && $password=="123")||
 로그인 페이지로 <a href="./postForm.php">돌아가기</a>
 <?php
 }else{
-	setCookie('isLogin','0');
-	setCookie('name','');
+	$_SESSION['isLogin']=0;
+	$_SESSION['name'='';
 ?>
 <h1>알 수 없는 사용자</h1>
 아이디, 암호가 일치하는 사용자가 없습니다<br>
