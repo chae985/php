@@ -4,10 +4,8 @@ header("Content-TYpe: text/html; charset=UTF-8");
 
 $name = $_POST['name'];
 $password = $_POST['pw'];
-//$year = $_POST['year'];
-//$mon = $_POST['mon'];
-//$day = $_POST['day'];
-//$age = 2016-$year+1;
+
+include('db.php');
 
 ?>
 <!-- Latest compiled and minified CSS -->
@@ -20,8 +18,29 @@ $password = $_POST['pw'];
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 <?php
+//디비 연결
+$link = mysql_connect($db['host'], $db['user'], $db['pw']);
+if(!$link){
+	die('Could not connect: ' . mysql_error());
+}
+//사용할 디비 선택
+mysql_select_db($db['db']);
+//SQL문 작성
+$sql = "select * from members where id = '".$name."' and pwd=password('".$password."')";
+echo $sql;
 
-if(( $name== "asdfg" && $password=="123")||
+$result = mysql_query($sql);
+$users = mysql_fetch_assoc($result);
+echo "<pre>";
+print_r($users);
+echo "</pre>"
+
+exit();
+//디비 실행
+
+//디비 연결 해제
+mysql_close($link);
+if(( $name== "admin" && $password=="123")||
    ( $name=="qwert" && $password=="123")
 ){
 	$_SESSION['islogin']=1;
@@ -35,7 +54,7 @@ if(( $name== "asdfg" && $password=="123")||
 <?php
 }else{
 	$_SESSION['isLogin']=0;
-	$_SESSION['name'='';
+	$_SESSION['name']='';
 ?>
 <h1>알 수 없는 사용자</h1>
 아이디, 암호가 일치하는 사용자가 없습니다<br>
